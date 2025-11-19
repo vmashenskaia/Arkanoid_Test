@@ -9,6 +9,9 @@ namespace UI
     /// </summary>
     public class UIMessageController : BaseUIController
     {
+        private const string StartText = "Начать игру";
+        private const string WinText   = "Вы выиграли!";
+        private const string LoseText  = "Вы проиграли!";
         private readonly UIMessageView _view = null;
         private readonly GameManager _game = null;
         private readonly EventBus _bus = null;
@@ -20,7 +23,7 @@ namespace UI
             _bus = bus;
 
             _bus.Subscribe<GameStateChangedEvent>(OnGameStateChanged);
-            _view.Button.onClick.AddListener(OnButtonClicked);
+            _view.SetButtonListener(OnButtonClicked);
 
             OnGameStateChanged(new GameStateChangedEvent(_game.State));
         }
@@ -28,7 +31,7 @@ namespace UI
         public override void Dispose()
         {
             _bus.Unsubscribe<GameStateChangedEvent>(OnGameStateChanged);
-            _view.Button.onClick.RemoveListener(OnButtonClicked);
+            _view.SetButtonListener(null);
         }
 
         private void OnGameStateChanged(GameStateChangedEvent evt)
@@ -37,7 +40,7 @@ namespace UI
             {
                 case GameManager.GameState.ReadyToStart:
                 {
-                    _view.Show("Начать игру");
+                    _view.Show(StartText);
                     break;
                 }
 
@@ -49,13 +52,13 @@ namespace UI
 
                 case GameManager.GameState.Win:
                 {
-                    _view.Show("Вы выиграли!");
+                    _view.Show(WinText);
                     break;
                 }
 
                 case GameManager.GameState.Lose:
                 {
-                    _view.Show("Вы проиграли!");
+                    _view.Show(LoseText);
                     break;
                 }
             }

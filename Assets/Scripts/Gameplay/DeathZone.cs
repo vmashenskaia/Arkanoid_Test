@@ -9,11 +9,9 @@ namespace Gameplay
     [RequireComponent(typeof(Collider))]
     public class DeathZone : MonoBehaviour
     {
-        private const string BallTag = "Ball";
-
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag(BallTag))
+            if (!other.CompareTag(Tags.Ball))
             {
                 return;
             }

@@ -1,6 +1,8 @@
+using System;
 using Core;
 using Core.Events;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Gameplay
 {
@@ -29,10 +31,6 @@ namespace Gameplay
 
             _input = ServiceLocator.Resolve<PaddleInput>();
             _eventBus = ServiceLocator.Resolve<EventBus>();
-
-            _eventBus.Subscribe<GameRestartEvent>(OnRestart);
-            _eventBus.Subscribe<GameStartedEvent>(OnGameStarted);
-
             _paddle = FindAnyObjectByType<Paddle>();
 
             if (_paddle == null)
@@ -46,7 +44,13 @@ namespace Gameplay
             ResetBall();
         }
 
-        private void OnDestroy()
+        private void OnEnable()
+        {
+            _eventBus.Subscribe<GameRestartEvent>(OnRestart);
+            _eventBus.Subscribe<GameStartedEvent>(OnGameStarted);
+        }
+
+        private void OnDisable()
         {
             _eventBus.Unsubscribe<GameRestartEvent>(OnRestart);
             _eventBus.Unsubscribe<GameStartedEvent>(OnGameStarted);

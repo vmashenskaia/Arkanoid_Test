@@ -10,11 +10,13 @@ namespace Gameplay.Bricks
         private readonly Color _hitColor = new Color(0.972f, 0.702f, 0.702f);
         private int _health = 2;
         private Renderer _renderer = null;
+        private Material _material = null;
 
         protected override void Awake()
         {
             base.Awake();
             _renderer = GetComponentInChildren<Renderer>();
+            _material = _renderer.material;
         }
 
         protected override void Hit()
@@ -23,7 +25,7 @@ namespace Gameplay.Bricks
 
             if (_health == 1)
             {
-                _renderer.material.color = _hitColor;
+                _material.color = _hitColor;
             }
             else if (_health <= 0)
             {

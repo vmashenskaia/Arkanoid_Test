@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace UI
@@ -12,9 +13,10 @@ namespace UI
         [SerializeField] private TMP_Text _message = null;
         [SerializeField] private Button _button = null;
         
-        public Button Button
+        public void SetButtonListener(UnityAction action)
         {
-            get { return _button; }
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(action);
         }
 
         public void Show(string text)

@@ -10,9 +10,8 @@ namespace Gameplay.Bricks
     [RequireComponent(typeof(Collider))]
     public abstract class BrickBase : MonoBehaviour
     {
-        private const string BallTag = "Ball";
-
         private EventBus _eventBus = null;
+        private bool _destroyed = false;
 
         protected virtual void Awake()
         {
@@ -21,7 +20,7 @@ namespace Gameplay.Bricks
 
         private void OnCollisionEnter(Collision collision)
         {
-            bool isBall = collision.collider.CompareTag(BallTag);
+            bool isBall = collision.collider.CompareTag(Tags.Ball);
 
             if (isBall)
             {
@@ -33,7 +32,9 @@ namespace Gameplay.Bricks
         {
             _eventBus.Publish(new BrickDestroyedEvent(this));
 
-            Destroy(gameObject, 0.05f);
+            if (_destroyed) return;
+            _destroyed = true;
+            Destroy(gameObject);
         }
     }
 }
